@@ -16,7 +16,6 @@ ALLOWED_HOSTS = ['*',]
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
     'admin_tools',
     'admin_tools.theming',
     'admin_tools.menu',
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'tabbed_admin',
     'rest_framework',
+    'corsheaders',
     'django_seed',
     'rest_framework_swagger',
     'easy_thumbnails',
@@ -41,37 +41,13 @@ INSTALLED_APPS = [
     'django_cleanup', # should go after your apps
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-)
-CORS_ALLOW_HEADERS = (
-    'access-control-allow-credentials',
-    'access-control-allow-origin',
-    'access-control-request-method',
-    'access-control-request-headers',
-    'accept',
-    'accept-encoding',
-    'accept-language',
-    'authorization',
-    'connection',
-    'content-type',
-    'dnt',
-    'credentials',
-    'host',
-    'origin',
-    'user-agent',
-    'X-CSRF-TOKEN',
-    'X-CSRFToken',
-    'x-requested-with',
-)
 
 TABBED_ADMIN_USE_JQUERY_UI = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,11 +56,11 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-INTERNAL_IPS = [
-    # ...
-    '127.0.0.1',
-    # ...
-]
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
+
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
 THUMBNAIL_PROCESSORS = (
@@ -92,9 +68,7 @@ THUMBNAIL_PROCESSORS = (
 ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 IMAGE_CROPPING_SIZE_WARNING = True
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': []
-}
+
 
 
 ROOT_URLCONF = 'sportnet.urls'
@@ -103,7 +77,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATE_DIR,
-                 "./sportnet/templates/"],
+                 "./sportnet/templates/",
+                 os.path.join(BASE_DIR, 'static/')],
         # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

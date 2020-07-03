@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
     path('admin/', admin.site.urls),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^api/', include('api.urls')),
+    url(r'^', include('main.urls')),
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
